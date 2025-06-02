@@ -27,6 +27,8 @@ export const DesignerCard = ({ designer, isShortlisted, onToggleShortlist }: Des
 
   const handleDetails = () => {
     console.log('View details for:', designer.name);
+    // This would typically navigate to a detailed designer page
+    alert(`Designer Details:\n\nName: ${designer.name}\nTitle: ${designer.title}\nLocation: ${designer.location}\nRating: ${designer.rating}/5 (${designer.reviews} reviews)\nHourly Rate: $${designer.hourlyRate}/hour\n\nSkills: ${designer.tags.join(', ')}\n\nStatus: ${designer.isOnline ? 'Online' : 'Offline'}`);
   };
 
   const handleHide = () => {
@@ -35,6 +37,7 @@ export const DesignerCard = ({ designer, isShortlisted, onToggleShortlist }: Des
 
   const handleReport = () => {
     console.log('Report:', designer.name);
+    alert(`Report submitted for ${designer.name}. Thank you for your feedback.`);
   };
 
   if (isHidden) {
@@ -65,6 +68,9 @@ export const DesignerCard = ({ designer, isShortlisted, onToggleShortlist }: Des
                 src={designer.image}
                 alt={designer.name}
                 className="w-12 h-12 rounded-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face';
+                }}
               />
               {designer.isOnline && (
                 <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
@@ -109,6 +115,9 @@ export const DesignerCard = ({ designer, isShortlisted, onToggleShortlist }: Des
                 src={image}
                 alt={`Portfolio ${index + 1}`}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                onError={(e) => {
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=200&h=200&fit=crop&crop=center';
+                }}
               />
             </div>
           ))}

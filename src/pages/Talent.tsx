@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Header } from '../components/Header';
 import { Award, Briefcase, MapPin, Star, TrendingUp } from 'lucide-react';
@@ -40,6 +39,12 @@ const Talent = () => {
     }
   ];
 
+  const handleViewProfile = (talent: typeof talents[0]) => {
+    console.log('Viewing profile for:', talent.name);
+    // This would typically navigate to a detailed profile page
+    alert(`Talent Profile:\n\nName: ${talent.name}\nSpecialty: ${talent.specialty}\nExperience: ${talent.experience}\nLocation: ${talent.location}\nRating: ${talent.rating}/5\nProjects: ${talent.projects}\n\nSkills: ${talent.skills.join(', ')}`);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <Header />
@@ -66,6 +71,9 @@ const Talent = () => {
                       src={talent.image}
                       alt={talent.name}
                       className="w-16 h-16 rounded-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face';
+                      }}
                     />
                     <div className="absolute -top-1 -right-1 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
                       <Award className="w-3 h-3 text-white" />
@@ -116,7 +124,10 @@ const Talent = () => {
                   </div>
                 </div>
 
-                <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 hover:shadow-lg">
+                <button 
+                  onClick={() => handleViewProfile(talent)}
+                  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 hover:shadow-lg"
+                >
                   View Profile
                 </button>
               </div>

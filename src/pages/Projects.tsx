@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Header } from '../components/Header';
 import { Folder, Clock, Users, Star } from 'lucide-react';
@@ -13,7 +12,7 @@ const Projects = () => {
       timeline: "4 weeks",
       team: 3,
       rating: 4.8,
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop"
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop&crop=center"
     },
     {
       id: 2,
@@ -23,7 +22,7 @@ const Projects = () => {
       timeline: "6 weeks",
       team: 2,
       rating: 4.9,
-      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=200&fit=crop"
+      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=200&fit=crop&crop=center"
     },
     {
       id: 3,
@@ -33,9 +32,15 @@ const Projects = () => {
       timeline: "3 weeks",
       team: 4,
       rating: 4.7,
-      image: "https://images.unsplash.com/photo-1558655146-d09347e92766?w=400&h=200&fit=crop"
+      image: "https://images.unsplash.com/photo-1558655146-d09347e92766?w=400&h=200&fit=crop&crop=center"
     }
   ];
+
+  const handleViewDetails = (project: typeof projects[0]) => {
+    console.log('Viewing details for project:', project.title);
+    // This would typically navigate to a detailed project page
+    alert(`Project Details:\n\nTitle: ${project.title}\nStatus: ${project.status}\nTimeline: ${project.timeline}\nTeam: ${project.team} members\nRating: ${project.rating}/5\n\nDescription: ${project.description}`);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -61,6 +66,9 @@ const Projects = () => {
                   src={project.image}
                   alt={project.title}
                   className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                  onError={(e) => {
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=200&fit=crop&crop=center';
+                  }}
                 />
                 <div className="absolute top-4 right-4">
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${
@@ -98,7 +106,10 @@ const Projects = () => {
                   </div>
                 </div>
 
-                <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 hover:shadow-lg">
+                <button 
+                  onClick={() => handleViewDetails(project)}
+                  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 hover:shadow-lg"
+                >
                   View Details
                 </button>
               </div>
