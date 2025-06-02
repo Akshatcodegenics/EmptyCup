@@ -1,8 +1,11 @@
 import React from 'react';
 import { Header } from '../components/Header';
 import { Folder, Clock, Users, Star } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const Projects = () => {
+  const { toast } = useToast();
+
   const projects = [
     {
       id: 1,
@@ -38,8 +41,10 @@ const Projects = () => {
 
   const handleViewDetails = (project: typeof projects[0]) => {
     console.log('Viewing details for project:', project.title);
-    // This would typically navigate to a detailed project page
-    alert(`Project Details:\n\nTitle: ${project.title}\nStatus: ${project.status}\nTimeline: ${project.timeline}\nTeam: ${project.team} members\nRating: ${project.rating}/5\n\nDescription: ${project.description}`);
+    toast({
+      title: `${project.title} - Project Details`,
+      description: `Status: ${project.status} | Timeline: ${project.timeline} | Team: ${project.team} members | Rating: ${project.rating}/5`,
+    });
   };
 
   return (

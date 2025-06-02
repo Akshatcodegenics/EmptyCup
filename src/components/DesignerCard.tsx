@@ -1,56 +1,83 @@
-
-import React, { useState } from 'react';
-import { Heart, Eye, EyeOff, Flag, ExternalLink, MapPin, Star } from 'lucide-react';
-
-interface Designer {
-  id: number;
-  name: string;
-  title: string;
-  location: string;
-  rating: number;
-  reviews: number;
-  hourlyRate: number;
-  image: string;
-  tags: string[];
-  portfolio: string[];
-  isOnline: boolean;
-}
+import React from 'react';
+import { Star, MapPin, Briefcase, Heart, Eye, EyeOff, Flag, Undo } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface DesignerCardProps {
-  designer: Designer;
+  designer: {
+    id: number;
+    name: string;
+    specialty: string;
+    experience: string;
+    location: string;
+    rating: number;
+    projects: number;
+    image: string;
+    skills: string[];
+  };
   isShortlisted: boolean;
   onToggleShortlist: () => void;
 }
 
-export const DesignerCard = ({ designer, isShortlisted, onToggleShortlist }: DesignerCardProps) => {
-  const [isHidden, setIsHidden] = useState(false);
+export const DesignerCard: React.FC<DesignerCardProps> = ({
+  designer,
+  isShortlisted,
+  onToggleShortlist
+}) => {
+  const { toast } = useToast();
+  const [isHidden, setIsHidden] = React.useState(false);
 
   const handleDetails = () => {
-    console.log('View details for:', designer.name);
-    // This would typically navigate to a detailed designer page
-    alert(`Designer Details:\n\nName: ${designer.name}\nTitle: ${designer.title}\nLocation: ${designer.location}\nRating: ${designer.rating}/5 (${designer.reviews} reviews)\nHourly Rate: $${designer.hourlyRate}/hour\n\nSkills: ${designer.tags.join(', ')}\n\nStatus: ${designer.isOnline ? 'Online' : 'Offline'}`);
+    console.log('Viewing details for:', designer.name);
+    toast({
+      title: `${designer.name} - Designer Details`,
+      description: `${designer.specialty} | ${designer.experience} experience | ${designer.location} | ${designer.projects} projects | ${designer.rating}/5 rating`,
+    });
   };
 
   const handleHide = () => {
-    setIsHidden(!isHidden);
+    setIsHidden(true);
+    toast({
+      title: "Designer Hidden",
+      description: `${designer.name} has been hidden from your list.`,
+    });
+  };
+
+  const handleUndo = () => {
+    setIsHidden(false);
+    toast({
+      title: "Designer Restored",
+      description: `${designer.name} has been restored to your list.`,
+    });
   };
 
   const handleReport = () => {
-    console.log('Report:', designer.name);
-    alert(`Report submitted for ${designer.name}. Thank you for your feedback.`);
+    console.log('Reporting:', designer.name);
+    toast({
+      title: "Report Submitted",
+      description: `Your report for ${designer.name} has been submitted for review.`,
+      variant: "destructive",
+    });
+  };
+
+  const handleShortlist = () => {
+    onToggleShortlist();
+    toast({
+      title: isShortlisted ? "Removed from Shortlist" : "Added to Shortlist",
+      description: `${designer.name} has been ${isShortlisted ? 'removed from' : 'added to'} your shortlist.`,
+    });
   };
 
   if (isHidden) {
     return (
-      <div className="bg-gray-50 rounded-xl p-6 border-2 border-dashed border-gray-200">
-        <div className="text-center text-gray-500">
-          <EyeOff className="w-8 h-8 mx-auto mb-2 opacity-50" />
-          <p className="text-sm">Designer hidden</p>
+      <div className="bg-gray-100 rounded-xl p-6 border border-gray-200 opacity-60">
+        <div className="text-center">
+          <p className="text-gray-500 mb-4">Designer hidden</p>
           <button
-            onClick={handleHide}
-            className="text-blue-600 hover:text-blue-700 text-sm mt-2 underline"
+            onClick={handleUndo}
+            className="flex items-center gap-2 mx-auto text-blue-600 hover:text-blue-700 font-medium"
           >
-            Show again
+            <Undo className="w-4 h-4" />
+            Undo
           </button>
         </div>
       </div>
@@ -58,127 +85,101 @@ export const DesignerCard = ({ designer, isShortlisted, onToggleShortlist }: Des
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 group">
-      {/* Header with avatar and online status */}
-      <div className="p-6 pb-4">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <img
-                src={designer.image}
-                alt={designer.name}
-                className="w-12 h-12 rounded-full object-cover"
-                onError={(e) => {
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face';
-                }}
-              />
-              {designer.isOnline && (
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
-              )}
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900">{designer.name}</h3>
-              <p className="text-sm text-gray-600">{designer.title}</p>
-            </div>
-          </div>
-          
-          <button
-            onClick={onToggleShortlist}
-            className={`p-2 rounded-lg transition-all duration-200 ${
-              isShortlisted
-                ? 'text-red-500 bg-red-50 hover:bg-red-100'
-                : 'text-gray-400 hover:text-red-500 hover:bg-red-50'
-            }`}
-          >
-            <Heart className={`w-5 h-5 ${isShortlisted ? 'fill-current' : ''}`} />
-          </button>
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group">
+      <div className="relative">
+        <img
+          src={designer.image}
+          alt={designer.name}
+          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+          onError={(e) => {
+            e.currentTarget.src = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=250&fit=crop&crop=face';
+          }}
+        />
+        <div className="absolute top-4 right-4">
+          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
+            Top Rated
+          </span>
         </div>
+      </div>
 
-        {/* Location and rating */}
+      <div className="p-6">
+        <h3 className="text-xl font-semibold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors duration-200">
+          {designer.name}
+        </h3>
+        <p className="text-blue-600 font-medium mb-4">{designer.specialty}</p>
+        
         <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
+          <div className="flex items-center gap-1">
+            <Briefcase className="w-4 h-4" />
+            <span>{designer.experience}</span>
+          </div>
           <div className="flex items-center gap-1">
             <MapPin className="w-4 h-4" />
             <span>{designer.location}</span>
           </div>
+        </div>
+
+        <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
           <div className="flex items-center gap-1">
             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
             <span className="font-medium">{designer.rating}</span>
-            <span>({designer.reviews})</span>
+          </div>
+          <span>{designer.projects} projects</span>
+        </div>
+
+        <div className="mb-6">
+          <div className="flex flex-wrap gap-2">
+            {designer.skills.slice(0, 3).map((skill, index) => (
+              <span
+                key={index}
+                className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+              >
+                {skill}
+              </span>
+            ))}
+            {designer.skills.length > 3 && (
+              <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
+                +{designer.skills.length - 3} more
+              </span>
+            )}
           </div>
         </div>
 
-        {/* Portfolio preview */}
-        <div className="grid grid-cols-3 gap-2 mb-4">
-          {designer.portfolio.slice(0, 3).map((image, index) => (
-            <div key={index} className="aspect-square rounded-lg overflow-hidden bg-gray-100">
-              <img
-                src={image}
-                alt={`Portfolio ${index + 1}`}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                onError={(e) => {
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=200&h=200&fit=crop&crop=center';
-                }}
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* Tags */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          {designer.tags.map((tag, index) => (
-            <span
-              key={index}
-              className="px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded-full font-medium"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        {/* Rate */}
-        <div className="text-center mb-4">
-          <span className="text-2xl font-bold text-gray-900">${designer.hourlyRate}</span>
-          <span className="text-gray-600">/hour</span>
-        </div>
-      </div>
-
-      {/* Action buttons */}
-      <div className="px-6 pb-6">
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 gap-3">
           <button
             onClick={handleDetails}
-            className="flex items-center justify-center gap-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
           >
-            <ExternalLink className="w-4 h-4" />
-            <span className="hidden sm:inline">Details</span>
+            <Eye className="w-4 h-4" />
+            Details
           </button>
           
           <button
             onClick={handleHide}
-            className="flex items-center justify-center gap-1 px-3 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-200"
           >
             <EyeOff className="w-4 h-4" />
-            <span className="hidden sm:inline">Hide</span>
+            Hide
           </button>
           
           <button
-            onClick={onToggleShortlist}
-            className={`flex items-center justify-center gap-1 px-3 py-2 rounded-lg transition-colors text-sm font-medium ${
+            onClick={handleShortlist}
+            className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-colors duration-200 ${
               isShortlisted
-                ? 'bg-red-50 text-red-600 hover:bg-red-100'
-                : 'bg-gray-100 text-gray-600 hover:bg-red-50 hover:text-red-600'
+                ? 'bg-red-100 text-red-700 hover:bg-red-200'
+                : 'bg-pink-100 text-pink-700 hover:bg-pink-200'
             }`}
           >
             <Heart className={`w-4 h-4 ${isShortlisted ? 'fill-current' : ''}`} />
-            <span className="hidden sm:inline">List</span>
+            {isShortlisted ? 'Shortlisted' : 'Shortlist'}
           </button>
           
           <button
             onClick={handleReport}
-            className="flex items-center justify-center gap-1 px-3 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition-colors text-sm font-medium"
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-orange-100 text-orange-700 rounded-lg hover:bg-orange-200 transition-colors duration-200"
           >
             <Flag className="w-4 h-4" />
-            <span className="hidden sm:inline">Report</span>
+            Report
           </button>
         </div>
       </div>

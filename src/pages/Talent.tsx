@@ -1,8 +1,11 @@
 import React from 'react';
 import { Header } from '../components/Header';
 import { Award, Briefcase, MapPin, Star, TrendingUp } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const Talent = () => {
+  const { toast } = useToast();
+
   const talents = [
     {
       id: 1,
@@ -41,8 +44,10 @@ const Talent = () => {
 
   const handleViewProfile = (talent: typeof talents[0]) => {
     console.log('Viewing profile for:', talent.name);
-    // This would typically navigate to a detailed profile page
-    alert(`Talent Profile:\n\nName: ${talent.name}\nSpecialty: ${talent.specialty}\nExperience: ${talent.experience}\nLocation: ${talent.location}\nRating: ${talent.rating}/5\nProjects: ${talent.projects}\n\nSkills: ${talent.skills.join(', ')}`);
+    toast({
+      title: `${talent.name} - Profile Details`,
+      description: `${talent.specialty} | ${talent.experience} | ${talent.location} | ${talent.projects} projects completed`,
+    });
   };
 
   return (
