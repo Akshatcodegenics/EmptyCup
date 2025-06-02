@@ -1,73 +1,215 @@
-# Welcome to your Lovable project
 
-## Project info
+# DesignPro - Designer Portfolio Platform
 
-**URL**: https://lovable.dev/projects/f3617dca-23b5-419a-812f-179cba2525d9
+A modern web application for browsing and connecting with talented designers, built with React, TypeScript, and Tailwind CSS.
 
-## How can I edit this code?
+## 🚀 Quick Start
 
-There are several ways of editing your application.
+### Prerequisites
+- Node.js 18+ 
+- Docker and Docker Compose (for containerized deployment)
+- Git
 
-**Use Lovable**
+### Local Development (Without Docker)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f3617dca-23b5-419a-812f-179cba2525d9) and start prompting.
+1. **Clone the repository**
+   ```bash
+   git clone <YOUR_GIT_URL>
+   cd <YOUR_PROJECT_NAME>
+   ```
 
-Changes made via Lovable will be committed automatically to this repo.
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-**Use your preferred IDE**
+3. **Start development server**
+   ```bash
+   npm run dev
+   ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+4. **Open your browser**
+   Navigate to `http://localhost:5173`
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🐳 Docker Deployment
 
-Follow these steps:
+### Local Development with Docker
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+1. **Start development environment**
+   ```bash
+   chmod +x scripts/deploy-local.sh
+   ./scripts/deploy-local.sh
+   ```
+   
+   Or manually:
+   ```bash
+   docker-compose -f docker-compose.dev.yml up --build
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+2. **Access the application**
+   - Frontend: `http://localhost:5173`
 
-# Step 3: Install the necessary dependencies.
-npm i
+3. **Stop the environment**
+   ```bash
+   docker-compose -f docker-compose.dev.yml down
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+### Production Deployment with Docker
+
+1. **Start production environment**
+   ```bash
+   chmod +x scripts/deploy-prod.sh
+   ./scripts/deploy-prod.sh
+   ```
+   
+   Or manually:
+   ```bash
+   docker-compose up --build -d
+   ```
+
+2. **Access the application**
+   - Frontend: `http://localhost:3000`
+
+3. **Stop the environment**
+   ```bash
+   docker-compose down
+   ```
+
+## ☁️ Cloud Deployment
+
+### Frontend Deployment (Netlify)
+
+1. **Connect to GitHub**
+   - Push your code to a GitHub repository
+   - Connect your GitHub account to Netlify
+
+2. **Configure Netlify**
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+   - The `netlify.toml` file is already configured
+
+3. **Auto-deployment**
+   - Any push to the main branch will automatically deploy
+
+### Alternative Frontend Deployment Options
+
+- **Vercel**: Similar to Netlify, supports React out of the box
+- **GitHub Pages**: Free hosting for static sites
+- **AWS S3 + CloudFront**: Enterprise-grade hosting
+- **Firebase Hosting**: Google's hosting solution
+
+### Backend Deployment (When Added)
+
+- **Railway**: Simple deployment platform
+- **Heroku**: Popular platform-as-a-service
+- **AWS EC2**: Virtual machines in the cloud
+- **DigitalOcean Droplets**: Simple cloud servers
+- **Docker containers**: Deploy to any cloud provider
+
+## 🛠️ Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build locally
+- `npm run lint` - Run ESLint
+
+## 🏗️ Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+│   ├── ui/             # Shadcn/ui components
+│   ├── Header.tsx      # Navigation header
+│   ├── DesignerCard.tsx # Designer profile cards
+│   └── FilterBar.tsx   # Filter controls
+├── pages/              # Page components
+│   ├── Index.tsx       # Browse designers page
+│   ├── Projects.tsx    # Projects showcase
+│   └── Talent.tsx      # Top talent page
+├── data/               # Static data
+│   └── designers.ts    # Designer profiles data
+├── hooks/              # Custom React hooks
+└── lib/                # Utility functions
 ```
 
-**Edit a file directly in GitHub**
+## 🎨 Technologies Used
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **Frontend**: React 18, TypeScript, Vite
+- **Styling**: Tailwind CSS, shadcn/ui
+- **Icons**: Lucide React
+- **Routing**: React Router
+- **State Management**: React Hooks
+- **Build Tool**: Vite
+- **Deployment**: Docker, Nginx
 
-**Use GitHub Codespaces**
+## 🔧 Configuration
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Environment Variables
+Create a `.env` file for environment-specific configurations:
+```env
+VITE_API_URL=http://localhost:3001
+VITE_APP_NAME=DesignPro
+```
 
-## What technologies are used for this project?
+### Docker Configuration
+- `Dockerfile` - Production build
+- `Dockerfile.dev` - Development build
+- `docker-compose.yml` - Production services
+- `docker-compose.dev.yml` - Development services
 
-This project is built with:
+## 🚀 Deployment Checklist
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Before Deployment
+- [ ] Update environment variables
+- [ ] Test Docker builds locally
+- [ ] Run linting and tests
+- [ ] Update version numbers
+- [ ] Create deployment documentation
 
-## How can I deploy this project?
+### For Production
+- [ ] Configure domain and SSL
+- [ ] Set up monitoring
+- [ ] Configure backups
+- [ ] Set up CI/CD pipeline
+- [ ] Performance optimization
 
-Simply open [Lovable](https://lovable.dev/projects/f3617dca-23b5-419a-812f-179cba2525d9) and click on Share -> Publish.
+## 📝 Contributing
 
-## Can I connect a custom domain to my Lovable project?
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
-Yes, you can!
+## 📄 License
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+This project is licensed under the MIT License.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## 🆘 Troubleshooting
+
+### Common Issues
+
+1. **Docker not starting**
+   - Ensure Docker Desktop is running
+   - Check Docker daemon status
+
+2. **Port conflicts**
+   - Change ports in docker-compose files
+   - Kill processes using required ports
+
+3. **Build failures**
+   - Clear node_modules and reinstall
+   - Check Node.js version compatibility
+
+### Getting Help
+
+- Check the console for error messages
+- Review Docker logs: `docker-compose logs`
+- Ensure all dependencies are installed
+- Verify environment configuration
+
+---
+
+**Project URL**: https://lovable.dev/projects/f3617dca-23b5-419a-812f-179cba2525d9
+
+For more detailed documentation, visit our [project documentation](https://docs.lovable.dev/).

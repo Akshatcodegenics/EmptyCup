@@ -1,12 +1,32 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Search, Bell, User } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 export const Header = () => {
   const location = useLocation();
+  const { toast } = useToast();
+  const [hasNotifications, setHasNotifications] = useState(true);
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleNotificationClick = () => {
+    console.log('Notification clicked');
+    toast({
+      title: "Notifications",
+      description: "You have 3 new messages and 2 project updates",
+    });
+    setHasNotifications(false);
+  };
+
+  const handleProfileClick = () => {
+    console.log('Profile clicked');
+    toast({
+      title: "Profile Menu",
+      description: "Profile settings, account preferences, and logout options",
+    });
+  };
 
   return (
     <header className="bg-white/80 backdrop-blur-lg shadow-sm border-b border-gray-100 sticky top-0 z-50 transition-all duration-300">
@@ -68,10 +88,19 @@ export const Header = () => {
                 className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64 transition-all duration-300 hover:shadow-md focus:shadow-lg"
               />
             </div>
-            <button className="p-2 text-gray-600 hover:text-blue-600 transition-all duration-200 hover:bg-blue-50 rounded-lg hover:scale-110">
+            <button 
+              onClick={handleNotificationClick}
+              className="relative p-2 text-gray-600 hover:text-blue-600 transition-all duration-200 hover:bg-blue-50 rounded-lg hover:scale-110"
+            >
               <Bell className="w-5 h-5" />
+              {hasNotifications && (
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+              )}
             </button>
-            <button className="p-2 text-gray-600 hover:text-blue-600 transition-all duration-200 hover:bg-blue-50 rounded-lg hover:scale-110">
+            <button 
+              onClick={handleProfileClick}
+              className="p-2 text-gray-600 hover:text-blue-600 transition-all duration-200 hover:bg-blue-50 rounded-lg hover:scale-110"
+            >
               <User className="w-5 h-5" />
             </button>
           </div>

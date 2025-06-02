@@ -1,0 +1,32 @@
+
+version: '3.8'
+
+services:
+  frontend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    restart: unless-stopped
+
+  # Development database
+  # postgres-dev:
+  #   image: postgres:15-alpine
+  #   environment:
+  #     POSTGRES_DB: designpro_dev
+  #     POSTGRES_USER: designpro
+  #     POSTGRES_PASSWORD: password
+  #   ports:
+  #     - "5433:5432"
+  #   volumes:
+  #     - postgres_dev_data:/var/lib/postgresql/data
+  #   restart: unless-stopped
+
+# volumes:
+#   postgres_dev_data:
