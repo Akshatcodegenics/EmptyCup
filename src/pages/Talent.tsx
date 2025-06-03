@@ -1,5 +1,7 @@
+
 import React from 'react';
 import { Header } from '../components/Header';
+import { Hero3D } from '../components/Hero3D';
 import { Award, Briefcase, MapPin, Star, TrendingUp } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -55,18 +57,23 @@ const Talent = () => {
       <Header />
       
       <main className="container mx-auto px-4 py-8 max-w-7xl">
-        <div className="text-center mb-12 animate-fade-in">
+        <div className="text-center mb-8 animate-fade-in">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Top Talent</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
             Connect with our most skilled and experienced designers
           </p>
+          
+          {/* 3D Hero Section */}
+          <div className="animate-float">
+            <Hero3D />
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
           {talents.map((talent, index) => (
             <div 
               key={talent.id}
-              className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group"
+              className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group animate-glow"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="p-6">
