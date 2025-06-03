@@ -1,13 +1,8 @@
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Sphere, Box, Torus } from '@react-three/drei';
 
-const FloatingShape = ({ position, color, shape = 'sphere' }: { 
-  position: [number, number, number], 
-  color: string, 
-  shape?: string 
-}) => {
+const FloatingCube = ({ position }: { position: [number, number, number] }) => {
   const meshRef = useRef<any>(null);
 
   useFrame((state) => {
@@ -18,25 +13,31 @@ const FloatingShape = ({ position, color, shape = 'sphere' }: {
     }
   });
 
-  if (shape === 'box') {
-    return (
-      <Box ref={meshRef} position={position}>
-        <meshStandardMaterial color={color} metalness={0.3} roughness={0.4} />
-      </Box>
-    );
-  } else if (shape === 'torus') {
-    return (
-      <Torus ref={meshRef} position={position} args={[1, 0.3, 16, 100]}>
-        <meshStandardMaterial color={color} metalness={0.3} roughness={0.4} />
-      </Torus>
-    );
-  } else {
-    return (
-      <Sphere ref={meshRef} position={position}>
-        <meshStandardMaterial color={color} metalness={0.3} roughness={0.4} />
-      </Sphere>
-    );
-  }
+  return (
+    <mesh ref={meshRef} position={position}>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color="#3B82F6" metalness={0.3} roughness={0.4} />
+    </mesh>
+  );
+};
+
+const FloatingSphere = ({ position }: { position: [number, number, number] }) => {
+  const meshRef = useRef<any>(null);
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.x = state.clock.elapsedTime * 0.3;
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.5;
+      meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 1.2) * 0.3;
+    }
+  });
+
+  return (
+    <mesh ref={meshRef} position={position}>
+      <sphereGeometry args={[0.8, 32, 32]} />
+      <meshStandardMaterial color="#8B5CF6" metalness={0.3} roughness={0.4} />
+    </mesh>
+  );
 };
 
 const Scene = () => {
@@ -46,11 +47,10 @@ const Scene = () => {
       <pointLight position={[10, 10, 10]} intensity={1} />
       <pointLight position={[-10, -10, -10]} intensity={0.5} color="#4F46E5" />
       
-      <FloatingShape position={[-2, 0, 0]} color="#3B82F6" shape="sphere" />
-      <FloatingShape position={[2, 1, -1]} color="#8B5CF6" shape="box" />
-      <FloatingShape position={[0, -1, 1]} color="#10B981" shape="torus" />
-      <FloatingShape position={[-1, 2, -2]} color="#F59E0B" shape="sphere" />
-      <FloatingShape position={[3, -1, 1]} color="#EF4444" shape="box" />
+      <FloatingCube position={[-2, 0, 0]} />
+      <FloatingSphere position={[2, 1, -1]} />
+      <FloatingCube position={[0, -1, 1]} />
+      <FloatingSphere position={[-1, 2, -2]} />
     </>
   );
 };
