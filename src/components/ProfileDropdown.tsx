@@ -2,12 +2,15 @@
 import React from 'react';
 import { User, Settings, LogOut, Crown, Star } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { useToast } from '@/hooks/use-toast';
 
 interface ProfileDropdownProps {
   onClose: () => void;
 }
 
 export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ onClose }) => {
+  const { toast } = useToast();
+  
   const userData = {
     name: "John Designer",
     email: "john@designpro.com",
@@ -15,6 +18,37 @@ export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ onClose }) => 
     role: "Pro Designer",
     rating: 4.9,
     projects: 42
+  };
+
+  const handleViewProfile = () => {
+    console.log('View Profile clicked for user:', userData.name);
+    toast({
+      title: "Profile Viewer",
+      description: `Opening ${userData.name}'s detailed profile with portfolio showcase`,
+    });
+    onClose();
+  };
+
+  const handleSettings = () => {
+    console.log('Settings clicked');
+    toast({
+      title: "Settings Panel",
+      description: "Accessing account preferences, notifications, and privacy settings",
+    });
+    onClose();
+  };
+
+  const handleSignOut = () => {
+    console.log('Sign out initiated');
+    toast({
+      title: "Signing Out",
+      description: "You have been successfully logged out. See you soon!",
+    });
+    // Simulate sign out delay
+    setTimeout(() => {
+      console.log('User signed out successfully');
+    }, 1000);
+    onClose();
   };
 
   return (
@@ -61,15 +95,24 @@ export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ onClose }) => 
 
           {/* Menu Items */}
           <div className="py-2">
-            <button className="w-full flex items-center gap-3 px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200 group">
+            <button 
+              onClick={handleViewProfile}
+              className="w-full flex items-center gap-3 px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200 group"
+            >
               <User className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
               <span>View Profile</span>
             </button>
-            <button className="w-full flex items-center gap-3 px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200 group">
+            <button 
+              onClick={handleSettings}
+              className="w-full flex items-center gap-3 px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all duration-200 group"
+            >
               <Settings className="w-4 h-4 group-hover:rotate-90 transition-transform duration-200" />
               <span>Settings</span>
             </button>
-            <button className="w-full flex items-center gap-3 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 group">
+            <button 
+              onClick={handleSignOut}
+              className="w-full flex items-center gap-3 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 group"
+            >
               <LogOut className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
               <span>Sign Out</span>
             </button>
