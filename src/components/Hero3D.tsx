@@ -2,10 +2,13 @@
 import React, { useRef, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Sphere, Box, Torus } from '@react-three/drei';
-import * as THREE from 'three';
 
-const FloatingShape = ({ position, color, shape = 'sphere' }: { position: [number, number, number], color: string, shape?: string }) => {
-  const meshRef = useRef<THREE.Mesh>(null);
+const FloatingShape = ({ position, color, shape = 'sphere' }: { 
+  position: [number, number, number], 
+  color: string, 
+  shape?: string 
+}) => {
+  const meshRef = useRef<any>(null);
 
   useFrame((state) => {
     if (meshRef.current) {
@@ -15,17 +18,25 @@ const FloatingShape = ({ position, color, shape = 'sphere' }: { position: [numbe
     }
   });
 
-  const ShapeComponent = shape === 'box' ? Box : shape === 'torus' ? Torus : Sphere;
-
-  return (
-    <ShapeComponent
-      ref={meshRef}
-      position={position}
-      args={shape === 'torus' ? [1, 0.3, 16, 100] : [1, 1, 1]}
-    >
-      <meshStandardMaterial color={color} metalness={0.3} roughness={0.4} />
-    </ShapeComponent>
-  );
+  if (shape === 'box') {
+    return (
+      <Box ref={meshRef} position={position}>
+        <meshStandardMaterial color={color} metalness={0.3} roughness={0.4} />
+      </Box>
+    );
+  } else if (shape === 'torus') {
+    return (
+      <Torus ref={meshRef} position={position} args={[1, 0.3, 16, 100]}>
+        <meshStandardMaterial color={color} metalness={0.3} roughness={0.4} />
+      </Torus>
+    );
+  } else {
+    return (
+      <Sphere ref={meshRef} position={position}>
+        <meshStandardMaterial color={color} metalness={0.3} roughness={0.4} />
+      </Sphere>
+    );
+  }
 };
 
 const Scene = () => {
