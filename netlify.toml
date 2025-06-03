@@ -10,3 +10,38 @@
 
 [build.environment]
   NODE_VERSION = "18"
+  NPM_FLAGS = "--production=false"
+
+# Headers for better security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https:; media-src 'self'; object-src 'none'; child-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Redirect old paths (if needed)
+# [[redirects]]
+#   from = "/old-path"
+#   to = "/new-path"
+#   status = 301
+
+# Environment variables for different deploy contexts
+[context.production.environment]
+  VITE_API_URL = "https://api.yoursite.com"
+  VITE_ENVIRONMENT = "production"
+
+[context.deploy-preview.environment]
+  VITE_API_URL = "https://staging-api.yoursite.com"
+  VITE_ENVIRONMENT = "staging"
+
+[context.branch-deploy.environment]
+  VITE_API_URL = "https://dev-api.yoursite.com"
+  VITE_ENVIRONMENT = "development"
