@@ -1,5 +1,5 @@
 
-# DesignPro - Designer Portfolio Platform
+# EmptyCup - Designer Portfolio Platform
 
 A modern web application for browsing and connecting with talented designers, built with React, TypeScript, and Tailwind CSS.
 
@@ -82,6 +82,3 @@ This project is licensed under the MIT License.
 
 **Ready to deploy?** Just run `./scripts/deploy-local.sh` and you're up and running in minutes!
 
-**Project URL**: https://lovable.dev/projects/f3617dca-23b5-419a-812f-179cba2525d9
-
-For more detailed documentation, visit our [project documentation](https://docs.lovable.dev/).
