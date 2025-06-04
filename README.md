@@ -6,7 +6,7 @@ A modern web application for browsing and connecting with talented designers, bu
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
+- Node.js 
 - Docker and Docker Compose (for containerized deployment)
 - Git
 
